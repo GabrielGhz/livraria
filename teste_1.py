@@ -1,5 +1,5 @@
 from datetime import timedelta
-
+#foi
 class Data:
     def __init__(self):
         self.__data_ent = ""
