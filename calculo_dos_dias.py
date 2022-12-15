@@ -24,7 +24,7 @@ class Data:
             dias = self.cal_multa(self.data_ent, valor)
             if int(dias) >= 1:
                 valor_multa = dias * 3
-                print(f"De acordo com o sistema, você atrasou {dias} dias para a entrega do livro e deverá pagar uma multa de: \nR${valor_multa},00 \nEsse é o valor devido aos dias passados Multiplicados por 3")
+                print(f"De acordo com o sistema, você atrasou {dias} dias para entregar o livro \nVocê deverá pagar uma multa de: \nR${valor_multa},00 \nEsse valor é gerado a partir dos dias pós vencimento da entrega Multiplicado por 3")
             elif int(dias) == 0:
                 print("Muito obrigado ;)")
         else:

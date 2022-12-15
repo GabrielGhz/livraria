@@ -1,186 +1,122 @@
 class Livraria:
-    def __init__(self, nome, editora, quant_pag, idioma, tipo, status, estoque):
-        self.__nome = nome
-        self.__editora = editora
-        self.__quant_pag = quant_pag
-        self.__idioma = idioma
-        self.__tipo = tipo.lower()
-        self.__status = status.lower()
-        self.__estoque = self.limite_estoque(estoque)
-        self.__alugados = 0
-        self.__vendidos = 0
-        self.__limite_estoque_livros = 100
+    def __init__(self):
+        self.__data_ent = ""
+        self.__data_rec = ""
+        self.__multa_p_dia = 0
 
-    @property
-    def livros_alugados(self):
-        return self.__alugados
+    def get_data_ent(self):
+        return self.__data_ent
 
-    @livros_alugados.setter
-    def livros_alugados(self, qntd):
-        if qntd > 0 and qntd + self.estoque == self.__limite_estoque_livros:
-            self.__alugados = qntd
+    def set_data_ent(self, valor):
+        if int(valor[0:2]) >= 1 and int(valor[0:2]) <= 30:
+            print("Obrigado, volte daqui a 7 dias para renovar")
+            self.__data_ent = valor
         else:
-            print("valor inválido")
-    
-    @property
-    def livros_vendidos(self):
-        return self.__vendidos
+            print("Valor inválido, tente novamente")
 
-    @livros_vendidos.setter
-    def livros_vendidos(self, qntd):
-        if qntd > 0 and qntd + self.estoque == self.__limite_estoque_livros:
-            self.__vendilivros_vendidos = qntd
+    def get_data_rec(self):
+        return self.__data_rec
+
+    def set_data_rec(self, valor) -> str:
+        if int(valor[0:2]) >= 1 and int(valor[0:2]) <= 30:
+            dias = self.cal_multa(self.data_ent, valor)
+            if int(dias) >= 1:
+                valor_multa = dias * 3
+                print(f"De acordo com o sistema, você atrasou {dias} dias para entregar o livro \nVocê deverá pagar uma multa de: \nR${valor_multa},00 \nEsse valor é gerado a partir dos dias pós vencimento da entrega Multiplicado por 3")
+            elif int(dias) == 0:
+                print("Muito obrigado ;)")
         else:
-            print("valor inválido")
+            print("Valor inválido, tente novamente")
 
-    @property
-    def nome(self):
-        return self.__nome
-    
-    @nome.setter
-    def nome(self, novo_nome):
-        self.__nome = novo_nome
+    def cal_multa(self, val1, val2) -> str:
+        dia_atras = int(val2[0:2]) - int(val1[0:2])
+        dia_atras = abs(dia_atras)
+        if dia_atras > 7:
+            dia_atras -= 7
+        return dia_atras
 
-    @property
-    def editora(self):
-        return self.__editora
-    
-    @editora.setter
-    def editora(self, nova_editora):
-        if nova_editora.isnumeric():
-            print("please do not enter numbers but letters")
-        else:
-            self.__editora = nova_editora
-
-    @property
-    def quant_pag(self):
-        return self.__quant_pag
-    
-    @quant_pag.setter
-    def quant_pag(self, new_numeral):
-        if type(new_numeral) == type(str()):
-            print("please do not enter letters but numbers ")
-        else:
-            self.__quant_pag = new_numeral
-
-    @property
-    def idioma(self):
-        return self.__idioma
-    
-    @idioma.setter
-    def idioma(self, new_language):
-        self.__nome = new_language
-
-    @property
-    def tipo(self):
-        return self.__tipo
-
-    @tipo.setter
-    def tipo(self, novo_tipo):
-        if novo_tipo == 0:
-            self.__tipo = "alugar"
-            print("Modificado para aluguel")
-        elif novo_tipo == 1:
-            self.__tipo = "venda"
-            print("Modificado para venda")
-        else:
-            print("Impossível modificar, chame o reponsável da loja")
-        
-    @property
-    def limite_do_estoque(self):
-        return self.__limite_estoque_livros
-    
-    @limite_do_estoque.setter
-    def limite_do_estoque(self, novo_limite):
-        if novo_limite > 0 and novo_limite <= 1000:
-            self.__limite_estoque_livros = novo_limite
-        else:
-            print("inválido")
-
-    def limite_estoque(self, quantidade):
-        if quantidade > 0 and quantidade <= 100:
-            return quantidade
-        else:
-            raise ValueError("Limite max de 100, dados inválidos")
-
-    @property
-    def status(self):
-        return self.status
-
-    @status.setter
-    def status(self, novo_status):
-        if novo_status == 0:
-            self.__status = "disponivel"
-            print("Modificado para disponivel")
-        elif novo_status == 1:
-            self.__status = "indisponivel"
-            print("Modificado para indisponivel")
-        else:
-            raise ValueError("impossível modificar, chame o responsável da loja")
-
-    @property
-    def estoque(self):
-        return self.__estoque
-
-    @estoque.setter
-    def estoque(self, novo_estoque):
-        if novo_estoque + self.__estoque <= self.__limite_estoque_livros:
-            self.__estoque += novo_estoque
-        else:
-            print("O limite no estoque foi excedido!") 
-
-    def alugar(self, qntd=0):
-        if self.__tipo == "alugar" and self.__status == "disponivel":
-            if qntd > 0 and qntd <= self.__estoque:
-                self.__estoque -= qntd
-                print("seu livro foi alugado, volte daqui a 7 dias para renovar o aluguel ou somente devolve-lo")
-                self.__alugados += qntd
-            else:
-                print("Você não pode alugar essa quantidade de livros, aqui esta a quantia no estoque atual: \n{}" .format(self.__estoque))
-        elif self.__status == "indisponivel":
-            print("Esse livro esta indisponivel")
-        else:
-            print("Você esta tentando comprar um livro que é para alugar")
-
-    def vender(self, qntd=0):
-        if self.__tipo == "venda" and self.__status == "disponivel":
-            if qntd > 0 and qntd <= self.__estoque:
-                self.__estoque -= qntd
-                print("Obrigado pela compra do livro, volte sempre!!")
-                self.__vendidos += qntd
-            else:
-                print("Não temos essa capacidade de livros para vender, aqui esta a quantida no estoque atual: \n{}" .format(self.__estoque))
-        elif self.__status == "indisponivel":
-            print("Esse livro esta indisponivel")
-        else:
-            print("Você esta tentando alugar um livro que é para venda")
-            
-    def devolver_livro(self, qntd = 0):
-        if qntd > 0 and qntd + self.__estoque <= self.__limite_estoque_livros:
-            self.__estoque += qntd
-        else:
-            print("você esta devolvendo livros a mais! veja se está correto")
-
-    def __str__(self):
-        return f"O livro é: {self.__nome}\nSua editora: {self.editora}\nAs quantidades de Páginas: {self.__quant_pag}\nSeu tipo atual é para {self.__tipo} mas pode ser modificado para venda ou aluguel\nSeu status: {self.__status}\nE o estoque atual: {self.estoque}"
-
-
-class Manga(Livraria):
-    def __init__(self, nome, editora, quant_pag, idioma, tipo, status, estoque):
-        super().__init__(nome, editora, quant_pag, idioma, tipo, status, estoque)
-    pass
+    data_ent = property(get_data_ent, set_data_ent)
+    data_rec = property(get_data_rec, set_data_rec)
 
 class Livro(Livraria):
-    def __init__(self, nome, editora, quant_pag, idioma, tipo, status, estoque):
-        super().__init__(nome, editora, quant_pag, idioma, tipo, status, estoque)
-    pass
+    def __init__(self, nome, nm_pag, idioma, edit, tipo, status):
+        super().__init__()
+        self.__nome = nome
+        self.__nm_pag = nm_pag
+        self.__idioma = idioma
+        self.__edit = edit
+        self.__tipo = tipo
+        self.__status = status
 
-livro1 = Livro("Pequeno principe", "SARAIVA", 300, "portugues", "Venda", "disponivel", 100)
-livro1.vender(12)
-livro1.vender(88)
-livro1.alugar(90)
-livro1.tipo = 0
-livro1.tipo = 2
-print(livro1.livros_vendidos)
-livro1.limite_do_estoque = 1232323
-print(livro1)
+    def get_nome(self):
+        return self.__nome
+
+    def set_nome(self, nome):
+        if type(nome) == str:
+            self.__nome = nome
+        else:
+            raise ValueError("VALOR INVÁLIDO")
+    
+    def get_nm_pag(self):
+        return self.__nm_pag
+    
+    def set_nm_pag(self, valor):
+        if valor > 0:
+            self.__nm_pag = valor
+        else:
+            raise ValueError("VALOR INVALIDO")
+    
+    def get_idioma(self):
+        return self.__idioma
+
+    def set_idioma(self, idioma):
+        if type(idioma) == str:
+            self.__idioma = idioma
+        else:
+            raise ValueError("VALOR INVÁLIDO")
+    
+    def get_edit(self):
+        return self.__edit
+
+    def set_edit(self, edit):
+        if type(edit) == str:
+            self.__edit = edit
+        else:
+            raise ValueError("VALOR INVÁLIDO")    
+    
+    def get_tipo(self):
+        return self.__tipo
+    
+    def set_tipo(self, valor):
+        if valor == 0:
+            valor = "alugar"
+            self.__tipo = valor
+        elif valor == 1:
+            valor = "venda"
+            self.__tipo = valor
+        else:
+            raise ValueError("VALOR INVÁLDIO")
+
+    def get_status(self):
+        return self.__status
+    
+    def set_status(self, valor):
+        if valor == 0:
+            valor = "indisponivel"
+            self.__status = valor
+        elif valor == 1:
+            valor = "disponivel"
+            self.__status = valor
+        else:
+            raise ValueError("VALOR INVÁLDIO")
+            
+    nome = property(get_nome, set_nome)
+    nm_pag = property(get_nm_pag, set_nm_pag)
+    idioma = property(get_idioma, set_idioma)
+    edit = property(get_edit, set_edit)
+    tipo = property(get_tipo, set_tipo)
+    status = property(get_status, set_status)
+
+class Revista(Livro):
+    def __init__(self, nome, nm_pag, idioma, edit, tipo, status):
+        super().__init__(self, nome, nm_pag, idioma, edit, tipo, status)
