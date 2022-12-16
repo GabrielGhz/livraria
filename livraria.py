@@ -2,7 +2,6 @@ class Livraria:
     def __init__(self):
         self.__data_ent = ""
         self.__data_rec = ""
-        self.__multa_p_dia = abs(0)
 
     def get_data_ent(self):
         return self.__data_ent
@@ -28,8 +27,15 @@ class Livraria:
         else:
             print("Valor inválido, tente novamente")
 
+    def trans_mes_dia(self, val):
+        if int(val[3:5]) >=1 and int(val[3:5]) <= 12:
+            dias = int(val[3:5]) * 30
+            return dias
+
     def cal_multa(self, val1, val2):
-        dia_atras = int(val1[0:2]) - int(val2[0:2])
+        di_tot1 = self.trans_mes_dia(val1) + int(val1[0:2])
+        di_tot2 = self.trans_mes_dia(val2) + int(val2[0:2])
+        dia_atras = di_tot1 - di_tot2
         dia_atras = abs(dia_atras)
         if dia_atras > 7:
             dia_atras -= 7
@@ -128,7 +134,7 @@ livro1.data_ent = "10/03"
 print("*" * 50)
 livro1.status = 0
 print("*" * 50)
-livro1.data_rec = "20/03"
+livro1.data_rec = "15/03"
 livro1.status = 1
 print("*" * 50)
 print(livro1)
