@@ -2,7 +2,6 @@ class Livraria:
     def __init__(self):
         self.__data_ent = ""
         self.__data_rec = ""
-        self.__multa_p_dia = abs(0)
 
     def get_data_ent(self):
         return self.__data_ent
