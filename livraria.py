@@ -2,14 +2,14 @@ class Livraria:
     def __init__(self):
         self.__data_ent = ""
         self.__data_rec = ""
-        self.__multa_p_dia = 0
+        self.__multa_p_dia = abs(0)
 
     def get_data_ent(self):
         return self.__data_ent
 
     def set_data_ent(self, valor):
         if int(valor[0:2]) >= 1 and int(valor[0:2]) <= 30:
-            print("Obrigado, volte daqui a 7 dias para renovar")
+            print("Obrigado pela compra ;)")
             self.__data_ent = valor
         else:
             print("Valor inválido, tente novamente")
@@ -20,20 +20,22 @@ class Livraria:
     def set_data_rec(self, valor) -> str:
         if int(valor[0:2]) >= 1 and int(valor[0:2]) <= 30:
             dias = self.cal_multa(self.data_ent, valor)
-            if int(dias) >= 1:
-                valor_multa = dias * 3
-                print(f"De acordo com o sistema, você atrasou {dias} dias para entregar o livro \nVocê deverá pagar uma multa de: \nR${valor_multa},00 \nEsse valor é gerado a partir dos dias pós vencimento da entrega Multiplicado por 3")
-            elif int(dias) == 0:
-                print("Muito obrigado ;)")
+            if dias >= 1:
+                valor_multa = dias * 2.5
+                print(f"De acordo com o sistema, você atrasou {dias} dias para entregar o livro \nVocê deverá pagar uma multa de: \nR${valor_multa} \nEsse valor é gerado a partir dos dias pós vencimento da entrega Multiplicado por R$2,50")
+            elif dias == 0:
+                print("Muito obrigado pela devolução;)")
         else:
             print("Valor inválido, tente novamente")
 
-    def cal_multa(self, val1, val2) -> str:
-        dia_atras = int(val2[0:2]) - int(val1[0:2])
+    def cal_multa(self, val1, val2):
+        dia_atras = int(val1[0:2]) - int(val2[0:2])
         dia_atras = abs(dia_atras)
         if dia_atras > 7:
             dia_atras -= 7
-        return dia_atras
+            return dia_atras
+        else:
+            return 0
 
     data_ent = property(get_data_ent, set_data_ent)
     data_rec = property(get_data_rec, set_data_rec)
@@ -88,28 +90,27 @@ class Livro(Livraria):
         return self.__tipo
     
     def set_tipo(self, valor):
-        if valor == 0:
-            valor = "alugar"
-            self.__tipo = valor
-        elif valor == 1:
-            valor = "venda"
-            self.__tipo = valor
-        else:
-            raise ValueError("VALOR INVÁLDIO")
+        if valor == True:
+            raise ValueError("NÃO É POSSÍVEL ALTERAR O TIPO DO LIVRO JÁ CADASTRADO")
 
     def get_status(self):
         return self.__status
     
     def set_status(self, valor):
         if valor == 0:
+            print("Modificado para indisponivel")
             valor = "indisponivel"
             self.__status = valor
         elif valor == 1:
+            print("Modificado para disponivel")
             valor = "disponivel"
             self.__status = valor
         else:
             raise ValueError("VALOR INVÁLDIO")
-            
+
+    def __str__(self):
+        return "Nome do Livro: {}\nQuantidade de páginas: {}\nIdioma: {}\nEditora: {}\nEle esta para: {}\nNo momento esta: {}" .format(self.nome, self.nm_pag, self.idioma, self.edit, self.tipo, self.status)
+
     nome = property(get_nome, set_nome)
     nm_pag = property(get_nm_pag, set_nm_pag)
     idioma = property(get_idioma, set_idioma)
@@ -120,3 +121,15 @@ class Livro(Livraria):
 class Revista(Livro):
     def __init__(self, nome, nm_pag, idioma, edit, tipo, status):
         super().__init__(self, nome, nm_pag, idioma, edit, tipo, status)
+
+livro1 = Livro("o pequeno principe", 123, "portugues", "SARAIVA", "alugar", "disponivel")
+print(livro1)
+livro1.data_ent = "10/03"
+print("*" * 50)
+livro1.status = 0
+print("*" * 50)
+livro1.data_rec = "20/03"
+livro1.status = 1
+print("*" * 50)
+print(livro1)
+print("*" * 50)
