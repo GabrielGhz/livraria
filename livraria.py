@@ -28,11 +28,13 @@ class Livraria:
             print("Valor inválido, tente novamente")
 
     def trans_mes_dia(self, val):
+        # pega os meses Ex:("**/03"), /o valor não pode passar de 12/ para transformar em dias totais
         if int(val[3:5]) >=1 and int(val[3:5]) <= 12:
-            dias = int(val[3:5]) * 30
+            dias = (int(val[3:5]) - 1) * 30
             return dias
 
     def cal_multa(self, val1, val2):
+        #soma os dias dos meses com os dias do mes atual
         di_tot1 = self.trans_mes_dia(val1) + int(val1[0:2])
         di_tot2 = self.trans_mes_dia(val2) + int(val2[0:2])
         dia_atras = di_tot1 - di_tot2
@@ -112,7 +114,7 @@ class Livro(Livraria):
             valor = "disponivel"
             self.__status = valor
         else:
-            raise ValueError("VALOR INVÁLDIO")
+            raise ValueError("VALOR INVÁLIDO")
 
     def __str__(self):
         return "Nome do Livro: {}\nQuantidade de páginas: {}\nIdioma: {}\nEditora: {}\nEle esta para: {}\nNo momento esta: {}" .format(self.nome, self.nm_pag, self.idioma, self.edit, self.tipo, self.status)
@@ -134,7 +136,8 @@ livro1.data_ent = "10/03"
 print("*" * 50)
 livro1.status = 0
 print("*" * 50)
-livro1.data_rec = "15/03"
+livro1.data_rec = "10/04"
+print("*" * 50)
 livro1.status = 1
 print("*" * 50)
 print(livro1)
