@@ -130,13 +130,13 @@ class Revista(Livro):
     def __init__(self, nome, nm_pag, idioma, edit, tipo, status):
         super().__init__(self, nome, nm_pag, idioma, edit, tipo, status)
 
-livro1 = Livro("o pequeno principe", 123, "portugues", "SARAIVA", "alugar", "disponivel")
+livro1 = Livro("As teorias de Darwin", 200, "portugues", "desconhecido", "alugar", "disponivel")
 print(livro1)
-livro1.data_ent = "10/03"
+livro1.data_ent = "03/09"
 print("*" * 50)
 livro1.status = 0
 print("*" * 50)
-livro1.data_rec = "10/04"
+livro1.data_rec = "12/12"
 print("*" * 50)
 livro1.status = 1
 print("*" * 50)
