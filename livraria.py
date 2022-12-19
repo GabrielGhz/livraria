@@ -34,7 +34,7 @@ class Livraria:
         else:
             print("Valor inválido, tente novamente")
 
-    def trans_mes_dia(self, val):
+    def transf_mes_dia(self, val):
         # pega os meses Ex:("**/03"), /o valor não pode passar de 12/ para transformar em dias totais
         if int(val[3:5]) >=1 and int(val[3:5]) <= 12:
             dias = (int(val[3:5]) - 1) * 30
@@ -42,8 +42,8 @@ class Livraria:
 
     def cal_multa(self, val1, val2):
         #soma os dias dos meses com os dias do mes atual
-        di_tot1 = self.trans_mes_dia(val1) + int(val1[0:2])
-        di_tot2 = self.trans_mes_dia(val2) + int(val2[0:2])
+        di_tot1 = self.transf_mes_dia(val1) + int(val1[0:2])
+        di_tot2 = self.transf_mes_dia(val2) + int(val2[0:2])
         dia_atras = di_tot1 - di_tot2
         dia_atras = abs(dia_atras)
         if dia_atras > 7:
