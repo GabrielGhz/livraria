@@ -1,17 +1,24 @@
+import re
 class Livraria:
     def __init__(self):
         self.__data_ent = ""
         self.__data_rec = ""
+    padrao = re.compile("[0-9]{2}[/][0-9]{2}")
+    
+    def valida_data(self, valor):
+        busca = self.padrao.search(valor).group
+        return busca
 
     def get_data_ent(self):
         return self.__data_ent
 
     def set_data_ent(self, valor):
-        if int(valor[0:2]) >= 1 and int(valor[0:2]) <= 30:
-            print("Obrigado pela compra ;)")
-            self.__data_ent = valor
-        else:
-            print("Valor inválido, tente novamente")
+        if self.valida_data(valor):
+            if int(valor[0:2]) >= 1 and int(valor[0:2]) <= 30:
+                print("Obrigado pela compra ;)")
+                self.__data_ent = valor
+            else:
+                print("Valor inválido, tente novamente")
 
     def get_data_rec(self):
         return self.__data_rec
